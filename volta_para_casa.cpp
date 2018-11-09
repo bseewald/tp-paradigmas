@@ -1,20 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 typedef struct
 {
     int volume;
     int price;
-    float density;
+    double density;
 } greedy_choice;
 
+// Funcao para ajudar na ordenacao do array de estruturas
 int density(const void *item_a, const void *item_b){
 
     greedy_choice *a = (greedy_choice *)item_a;
     greedy_choice *b = (greedy_choice *)item_b;
 
-    unsigned int ratio_a = a->density;
-    unsigned int ratio_b = b->density;
+    double ratio_a = a->density;
+    double ratio_b = b->density;
 
     if (ratio_a > ratio_b) {
         return -1;
@@ -25,33 +27,39 @@ int density(const void *item_a, const void *item_b){
     return 1;
 }
 
-int *fractional_knapsack(int total_itens, int knapsack_size, greedy_choice *itens){
+double fractional_knapsack(int cheese, int budget, greedy_choice *itens){
 
-    int j = total_itens-1;
-    int k_size = knapsack_size;
+    int k_budget = 0;
+    double fractional, cube = 0;
 
-    qsort(itens, total_itens, sizeof(greedy_choice), density);
+    // Ordenacao do array de estruturas pela variavel de densidade
+    qsort(itens, cheese, sizeof(greedy_choice), density);
 
-    while(j >= 0)
+    // Algoritmo guloso
+    for(int j = 0; j < cheese; j++)
     {
-        if(density[j] <= size)
+        if(itens[j].price + k_budget <= budget)
         {
-            size -=
+            k_budget += itens[j].price;
+            cube += (double)itens[j].volume;
         }
         else{
-
+            fractional = (double)(budget - k_budget)/itens[j].price;
+            cube += (double)itens[j].volume * fractional;
+            k_budget = budget;
         }
-        j--;
     }
-    return 0;
+    return cube;
 }
 
 int main(){
 
     int cheese, budget, array_size, n, i;
+    double cheese_volume, base;
 
     while(true)
     {
+        // Leitura dos inputs
         scanf("%d", &cheese);
         scanf("%d", &budget);
 
@@ -60,7 +68,7 @@ int main(){
 
         i = 0;
 
-        // Leitura dos numeros do input
+        // Leitura dos volumes
         while(array_size != 0)
         {
             scanf("%d", &n);
@@ -71,6 +79,8 @@ int main(){
 
         array_size = cheese;
         i = 0;
+
+        // Leitura dos precos
         while(array_size != 0)
         {
             scanf("%d", &n);
@@ -79,13 +89,21 @@ int main(){
             i++;
         }
 
+        // Definicao do valor da densidade = volume / preco
         for(i = 0; i < cheese; ++i)
         {
-            array[i].density = (float) array[i].volume/array[i].price;
+            array[i].density = (double)array[i].volume/array[i].price;
         }
 
-        fractional_knapsack(cheese, budget, array);
+        // Paradigma da mochila fracionaria
+        cheese_volume = fractional_knapsack(cheese, budget, array);
 
+        // Formula que define o valor da base da piramide
+        base = (-1 + sqrt(1 + (8 * cheese_volume))) / 2;
+
+        // Valor da base da piramidade de queijo
+        printf("%d\n", (int)base);
+        break;
     }
     return 0;
 }

@@ -10,3 +10,6 @@ Os problemas a serem resolvidos no URI Online Judge com seus respectivos código
 
 ### Bolhas e Baldes
 Resolvido usando C/C++ e o paradigma de "divisão e conquista".
+
+### A Volta para Casa
+resolvido usando C/C++ e o paradigma da mochila fracionária.
