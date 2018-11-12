@@ -1,20 +1,20 @@
 #include <stdio.h>
 #include <string.h>
 
-#define TEXT_SIZE 1000000
+#define TEXT_SIZE 1000010
 #define KEYBOARD_SIZE 128
 
 char text[TEXT_SIZE];
-int keyboard[KEYBOARD_SIZE];
 int keys;
 
 int bigger_substring_size = 0;
 
-void bigger_substring(){
+int bigger_substring(){
 
     int substring_counter[KEYBOARD_SIZE];
-    int keys_used = 0, counter_aux = 0;
     int curr_start = 0, curr_end = keys-1;
+    int text_actual_size = strlen(text);
+    int keys_used = 0, counter_aux = 0;
 
     // Zera contadores
     for (int i = 0; i < KEYBOARD_SIZE; ++i)
@@ -29,24 +29,35 @@ void bigger_substring(){
         substring_counter[text[i]]++;
     }
 
-    while(curr_end < (strlen(text)-2)){
+    // Enquanto o texto nao terminou
+    while(curr_end < text_actual_size-2){
         // Ainda nao atingiu o limite de teclas
-        while(keys_used <= keys)
+        while(keys_used <= keys && (curr_end < text_actual_size-2))
         {
+            // Verifica o caractere seguinte no final da substring
             curr_end++;
+            // Novo caractere ?
             if(substring_counter[text[curr_end]] == 0){
                 keys_used++;
             }
+            // Aumenta o contador do caractere
             substring_counter[text[curr_end]]++;
         }
+        // Se ultrapassou o limite de teclas, entao avanca em 1 caractere
+        // no inicio da substring
         if(keys_used > keys){
             curr_start++;
         }
 
+        // Essa substring eh maior que as computadas antes ?
         if((curr_end - curr_start + 1) > bigger_substring_size){
             bigger_substring_size = curr_end - curr_start + 1;
         }
 
+        // Decrementa o contador do caractere que foi retirado da
+        // substring. Se ele voltou para zero, entao temos um caractere
+        // unico a menos e precisamos decrementar o contador de teclas
+        // usadas
         if(substring_counter[text[curr_start-1]] > 0){
             substring_counter[text[curr_start-1]]--;
             counter_aux = substring_counter[text[curr_start-1]];
@@ -55,6 +66,7 @@ void bigger_substring(){
             }
         }
     }
+    return 0;
 }
 
 int main()

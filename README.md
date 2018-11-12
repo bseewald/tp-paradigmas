@@ -16,3 +16,6 @@ Resolvido usando C/C++ e o paradigma da mochila fracionária.
 
 ### Troco
 Resolvido usando C/C++ e programação dinâmica.
+
+### Teclado Quebrado
+Resolvido usando C/C++ e contadores de caracteres em tempo linear.
