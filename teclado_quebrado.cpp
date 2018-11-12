@@ -12,67 +12,72 @@ int bigger_substring_size = 0;
 
 void bigger_substring(){
 
-	int substring_counter[KEYBOARD_SIZE];
-	int keys_used = 0;
+    int substring_counter[KEYBOARD_SIZE];
+    int keys_used = 0, counter_aux = 0;
+    int curr_start = 0, curr_end = keys-1;
 
-	int curr_start = 0, curr_end = keys-1;
+    // Zera contadores
+    for (int i = 0; i < KEYBOARD_SIZE; ++i)
+        substring_counter[i] = 0;
 
-	// Zera contadores
-	for (int i = 0; i < KEYBOARD_SIZE; ++i)
-		substring_counter[i] = 0;
+    // Contadores para cada caractere
+    for (int i = 0; i < keys; ++i){
+        if(substring_counter[text[i]] == 0){
+            // Quantidade de caracteres diferentes
+            keys_used++;
+        }
+        substring_counter[text[i]]++;
+    }
 
-	// Contadores para cada caractere
-	for (int i = 0; i < keys; ++i){
-		if(substring_counter[text[i]] == 0){
-			// Quantidade de caracteres diferentes
-			keys_used++;
-		}
-		substring_counter[text[i]]++;
-	}
+    while(curr_end < (strlen(text)-2)){
+        // Ainda nao atingiu o limite de teclas
+        while(keys_used <= keys)
+        {
+            curr_end++;
+            if(substring_counter[text[curr_end]] == 0){
+                keys_used++;
+            }
+            substring_counter[text[curr_end]]++;
+        }
+        if(keys_used > keys){
+            curr_start++;
+        }
 
-	for (unsigned long i = 0; i < strlen(text)-1; i++)
-	{
-		curr_start = i;
+        if((curr_end - curr_start + 1) > bigger_substring_size){
+            bigger_substring_size = curr_end - curr_start + 1;
+        }
 
-		// Ainda nao atingiu o limite de teclas
-		while((keys_used <= keys) && (curr_end < strlen(text)-1))
-		{
-			curr_end++;
-			if(substring_counter[text[curr_end]] == 0){
-				keys_used++;
-			}
-			substring_counter[text[curr_end]]++;
-			printf("%c %d %d \n", text[curr_end], substring_counter[text[curr_end]], keys_used);
-		}
-
-		if((curr_end - curr_start) > bigger_substring_size)
-			bigger_substring_size = curr_end - curr_start;
-
-		substring_counter[text[curr_start]] = 0;
-		keys_used--;
-	}
+        if(substring_counter[text[curr_start-1]] > 0){
+            substring_counter[text[curr_start-1]]--;
+            counter_aux = substring_counter[text[curr_start-1]];
+            if(counter_aux == 0){
+                keys_used--;
+            }
+        }
+    }
 }
 
 int main()
 {
     while(true){
 
-    	// Leitura do input: numero de teclas restantes
-    	scanf("%d", &keys);
-		getchar();
+        bigger_substring_size = 0;
 
-    	if(keys != 0){
-    		// Leitura do texto
-			if(fgets(text, TEXT_SIZE, stdin) != NULL){
-				bigger_substring();
-			}
+        // Leitura do input: numero de teclas restantes
+        scanf("%d", &keys);
+        getchar();
 
-			printf("%d\n", bigger_substring_size);
-    	}
-    	else{
-    		// Ultimo caso de teste
-    		break;
-    	}
+        if(keys != 0){
+            // Leitura do texto
+            if(fgets(text, TEXT_SIZE, stdin) != NULL){
+                bigger_substring();
+            }
+            printf("%d\n", bigger_substring_size);
+        }
+        else{
+            // Ultimo caso de teste
+            break;
+        }
     }
-	return 0;
+    return 0;
 }
