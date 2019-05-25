@@ -19,3 +19,14 @@ Resolvido usando C/C++ e programação dinâmica.
 
 ### Teclado Quebrado
 Resolvido usando C/C++ e contadores de caracteres em tempo linear.
+
+####################################################################################
+
+- **1310**: Lucro
+- **1487**: Six Flags
+- **2241**: Go--
+- **2664**: Ginástica
+- **2796**: Planta da Casa
+
+### Lucro
+Resolvido usando C/C++ e o subvetor de soma máxima
