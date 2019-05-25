@@ -29,4 +29,7 @@ Resolvido usando C/C++ e contadores de caracteres em tempo linear.
 - **2796**: Planta da Casa
 
 ### Lucro
-Resolvido usando C/C++ e o subvetor de soma máxima
+Resolvido usando C/C++ e o subvetor de soma máxima.
+
+### Six Flags
+Resolvido usando C/C++ e o paradigma da mochila com repetição.

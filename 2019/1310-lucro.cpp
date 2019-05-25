@@ -1,23 +1,23 @@
 #include <stdio.h>
 #include <algorithm>
-#include <tuple> 
+#include <tuple>
 
 using namespace std;
 
 tuple<int, int> maxSubarray(int array[], int days, int cost){
 
     tuple <int, int> profit;
-    
+
     if(days == 1){
         get<0>(profit) = max(array[0]-cost, 0);
         get<1>(profit) = get<0>(profit);
-        return profit; 
+        return profit;
     }
 
     profit = maxSubarray(array, days-1, cost);
     get<0>(profit) = max(get<0>(profit), get<1>(profit) + array[days-1] - cost);
     get<1>(profit) = max(0, get<1>(profit) + array[days-1] - cost);
-    
+
     return profit;
 }
 
@@ -38,6 +38,8 @@ int main(){
 
         arraySize = nDays;
         i=0;
+
+        // Leitura dos numeros do input
         while(arraySize!=0){
             scanf("%d", &n);
             arrayNumbers[i] = n;
