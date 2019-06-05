@@ -39,7 +39,7 @@ int main(){
             matrix[k][j] = add(matrix[1-k][j-1], matrix[1-k][j+1]);
         }
         // Extremos somente copia o valor do vizinho
-        matrix[k][0] = matrix[1-k][1], 0;
+        matrix[k][0] = matrix[1-k][1];
         matrix[k][n - m] = matrix[1-k][n - m - 1];
 
         k = (i+1)%2;
