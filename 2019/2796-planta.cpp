@@ -46,8 +46,10 @@ int histogram(int blueprint_row[], int row_size){
 
 int main(){
 
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
     int n, m, k, c, l;
-    int length, width;
 
     // Casa com dimensao n x m
     cin >> n >> m;
@@ -62,7 +64,7 @@ int main(){
     string space;
     cin.ignore();
     for (int i = 0; i < n; i++){
-        getline(cin, space); 
+        getline(cin, space);
         for (int j = 0; j < m; j++){
             if(space[j] == '.'){
                 blueprint[i][j] = 1;
@@ -81,7 +83,6 @@ int main(){
         cin >> c >> l;
         w_tables[i] = l;
         area_tables[i] = c*l;
-        cout << area_tables[i] << " ";
     }
 
     // Baseado no problema "Maximum Size Rectangle of All 1's"
@@ -100,16 +101,22 @@ int main(){
         max_table_area = max(max_table_area, histogram(aux_table, m));
     }
 
-    // TODO: associar area com maior mesa
+    // Associar area com maior mesa possivel
     int table = 0;
+    l = 0;
     for(int i=0; i<k; i++){
-        if(area_tables[i] <= max_table_area && table <= area_tables[i] && l < w_tables[i]){
-            table = area_tables[i];
-            l = w_tables[i];
+        if(area_tables[i] <= max_table_area){
+            if(table < area_tables[i]){
+                table = area_tables[i];
+                l = w_tables[i];
+            }
+            else if(table == area_tables[i] && l < w_tables[i]){
+                l = w_tables[i];
+            }
         }
     }
 
     // Dimensoes da mesa de maior area que cabe na casa
-    cout << l << " " << table/l << endl;
+    cout << table/l << " " << l << "\n";;
     return 0;
 }
