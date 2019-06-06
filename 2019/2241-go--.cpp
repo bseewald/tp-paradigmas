@@ -24,11 +24,11 @@ int main(){
     }
 
     // print board
-    for (int i = 0; i < n; i++){
-        for (int j = 0; j < n; j++){
-            cout << "[" << i << "][" << j << "]: " << board[i][j] << endl;
-        }
-    }    
+    // for (int i = 0; i < n; i++){
+    //     for (int j = 0; j < n; j++){
+    //         cout << "[" << i << "][" << j << "]: " << board[i][j] << endl;
+    //     }
+    // }
 
     // 0: regiao sem peca
     // 1: regiao com peca preta
@@ -38,44 +38,59 @@ int main(){
     // Start Go--
     b_dim = p;
     w_dim = p;
-        
-    for (int k = n; k > 1; k--){
-        for (int i = 0; i < k; i++){
-            for (int j = 0; j < k; j++){
-                if(board[i][j+1] == 3 && board[i+1][j+1] == 3 && board[i+1][j] == 3){
-                    //regiao mista
-                    board[i][j] = 3;
-                }
-                else{
-                    if(board[i][j] == 1){
-                        if(board[i][j+1] != 2 && board[i+1][j+1] != 2 && board[i+1][j] != 2){
-                            board[i][j] = 1; // regiao preta
-                            b_dim++;
-                        }
-                        else
-                            board[i][j] = 3; // regiao mista
+
+    if(n > 2){
+        for (int k = n; k > 2; k--){
+            for (int i = 0; i < k-1; i++){
+                for (int j = 0; j < k-1; j++){
+                    if(board[i][j] == 3 || board[i][j+1] == 3 || board[i+1][j+1] == 3 || board[i+1][j] == 3){
+                        //regiao mista
+                        board[i][j] = 3;
                     }
                     else{
-                        if(board[i][j] == 2){
-                            if(board[i][j+1] != 1 && board[i+1][j+1] != 1 && board[i+1][j] != 1){
-                                board[i][j] = 1; //regiao branca
-                                w_dim++;
+                        if(board[i][j] == 1){ // peca preta
+                            if(board[i][j+1] != 2 && board[i+1][j+1] != 2 && board[i+1][j] != 2){ // nao tem vizinhos brancos
+                                board[i][j] = 1; // regiao preta
+                                b_dim += 1;
+                            }
+                            else
+                                board[i][j] = 3; // regiao mista
+                        }
+                        else{
+                            if(board[i][j] == 2){ // peca branca
+                                if(board[i][j+1] != 1 && board[i+1][j+1] != 1 && board[i+1][j] != 1){ // nao tem vizinhos pretos
+                                    board[i][j] = 2; //regiao branca
+                                    w_dim += 1;
+                                }
+                                else
+                                    board[i][j] = 3; // regiao mista
+                            }
+                            else{ // regiao sem peca
+                                if((board[i][j+1] == 1 || board[i+1][j+1] == 1 || board[i+1][j] == 1) &&
+                                    (board[i][j+1] != 2 && board[i+1][j+1] != 2 && board[i+1][j] != 2)){
+                                    board[i][j] = 1; // regiao preta
+                                    b_dim += 1;
+                                }
+                                else{
+                                    if((board[i][j+1] == 2 || board[i+1][j+1] == 2 || board[i+1][j] == 2) &&
+                                        (board[i][j+1] != 1 && board[i+1][j+1] != 1 && board[i+1][j] != 1)){
+                                        board[i][j] = 2; // regiao branca
+                                        w_dim += 1;
+                                    }
+                                    else{
+                                        if ((board[i][j+1] == 2 || board[i+1][j+1] == 2 || board[i+1][j] == 2) &&
+                                            (board[i][j+1] == 1 || board[i+1][j+1] == 1 || board[i+1][j] == 1)){
+                                            board[i][j] = 3; // regiao mista
+                                        }
+                                    }
+                                }
                             }
                         }
-                        else
-                            board[i][j] = 3; // regiao mista
                     }
                 }
             }
         }
     }
-
-    // print board
-    for (int i = 0; i < n; i++){
-        for (int j = 0; j < n; j++){
-            cout << "[" << i << "][" << j << "]: " << board[i][j] << endl;
-        }
-    }    
 
     // Total de dimensoes de cada jogador
     cout << b_dim << " " << w_dim << endl;
