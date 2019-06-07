@@ -7,9 +7,9 @@ using namespace std;
 
 // Funcao que calcula o histograma
 // Baseado no problema "Largest Rectangle in Histogram"
-int histogram(int blueprint_row[], int row_size){
+int histogram(int blueprint_row[], int row_size, int house_measures[]){
 
-    int area = 0, max_area = 0, stack_top;
+    int stack_top, width;
 	stack<int> hist;
 
     int i = 0;
@@ -20,28 +20,32 @@ int histogram(int blueprint_row[], int row_size){
 		else{
 			stack_top = blueprint_row[hist.top()];
 			hist.pop();
+            width = i;
+			
+            if(!hist.empty()){
+                width = i - hist.top() - 1;
+            }
 
-			if(!hist.empty())
-				area = stack_top * (i - hist.top() - 1);
-            else
-                area = stack_top * i;
-
-            max_area = max(area, max_area);
+            if(house_measures[stack_top] < width){
+                house_measures[stack_top] = width;
+            }
 		}
 	}
 
 	while(!hist.empty()){
         stack_top = blueprint_row[hist.top()];
 		hist.pop();
+        width = i;
 
-		if(!hist.empty())
-			area = stack_top * (i - hist.top() - 1);
-        else
-            area = stack_top * i;
+        if(!hist.empty()){
+            width = i - hist.top() - 1;
+        }
 
-		max_area = max(area, max_area);
+        if(house_measures[stack_top] < width){
+            house_measures[stack_top] = width;
+        }
 	}
-    return max_area;
+    return 0;
 }
 
 int main(){
@@ -72,51 +76,55 @@ int main(){
         }
     }
 
+    int house_measures_size = min(500, max(n, m));
+    int house_measures[house_measures_size+1];
+    for(int i=0; i<=house_measures_size; i++){
+        house_measures[i] = -1;
+    }
+
     // Quantidade de mesas
     // c -> comprimento da mesa
     // l -> largura da mesa
     cin >> k;
-    int w_tables[k];
-    int area_tables[k];
-
+    int tables[3][k];
     for (int i = 0; i < k; i++){
         cin >> c >> l;
-        w_tables[i] = l;
-        area_tables[i] = c*l;
+        tables[0][k] = c;
+        tables[1][k] = l;
+        tables[2][k] = c*l;
     }
 
     // Baseado no problema "Maximum Size Rectangle of All 1's"
     int aux_table[m];
     memset(aux_table, 0, sizeof(aux_table));
 
-    int max_table_area = histogram(blueprint[0], m);
-
-    for (int i = 1; i < n; i++){
-        for (int j = 0; j < m; j++){
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
             if(blueprint[i][j] == 1)
                 aux_table[j] = 1 + aux_table[j];
             else
                 aux_table[j] = 0;
         }
-        max_table_area = max(max_table_area, histogram(aux_table, m));
+        histogram(aux_table, m, house_measures);
     }
 
     // Associar area com maior mesa possivel
-    int table = 0;
-    l = 0;
-    for(int i=0; i<k; i++){
-        if(area_tables[i] <= max_table_area){
-            if(table < area_tables[i]){
-                table = area_tables[i];
-                l = w_tables[i];
-            }
-            else if(table == area_tables[i] && l < w_tables[i]){
-                l = w_tables[i];
+    int area = 0, table_selected = 0;
+    for(int i=1; i<=house_measures_size; i++){ // vetor com as medidas dos quartos
+        if(house_measures[i] != -1){
+            area = house_measures[i] * i;
+            for (int i = 0; i<k; i++){
+                if(tables[2][i] <= area && tables[1][i] <= house_measures[i] && tables[0][i] <= i){
+                    if(){
+                       // a mesa selecionada
+                       table_selected = i;
+                    }
+                }
             }
         }
     }
 
     // Dimensoes da mesa de maior area que cabe na casa
-    cout << table/l << " " << l << "\n";;
+    // cout << table/l << " " << l << "\n";;
     return 0;
 }
