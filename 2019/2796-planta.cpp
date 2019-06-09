@@ -1,5 +1,5 @@
-#include <iostream>
 #include <cstring>
+#include <cstdio>
 #include <algorithm>
 #include <stack>
 
@@ -21,7 +21,7 @@ int histogram(int blueprint_row[], int row_size, int house_measures[]){
 			stack_top = blueprint_row[hist.top()];
 			hist.pop();
             width = i;
-			
+
             if(!hist.empty()){
                 width = i - hist.top() - 1;
             }
@@ -50,13 +50,10 @@ int histogram(int blueprint_row[], int row_size, int house_measures[]){
 
 int main(){
 
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
     int n, m, k, c, l;
 
     // Casa com dimensao n x m
-    cin >> n >> m;
+    scanf("%d %d", &n, &m);
     int blueprint[n][m];
 
     // Zera matriz
@@ -65,10 +62,9 @@ int main(){
     // Planta da casa:
     // . -> espaco vazio
     // # -> espaco preenchido
-    string space;
-    cin.ignore();
+    char space[m];
     for (int i = 0; i < n; i++){
-        getline(cin, space);
+        scanf("%s", space);
         for (int j = 0; j < m; j++){
             if(space[j] == '.'){
                 blueprint[i][j] = 1;
@@ -76,25 +72,13 @@ int main(){
         }
     }
 
+    // Baseado no problema "Maximum Size Rectangle of All 1's"
     int house_measures_size = min(500, max(n, m));
     int house_measures[house_measures_size+1];
     for(int i=0; i<=house_measures_size; i++){
         house_measures[i] = -1;
     }
 
-    // Quantidade de mesas
-    // c -> comprimento da mesa
-    // l -> largura da mesa
-    cin >> k;
-    int tables[3][k];
-    for (int i = 0; i < k; i++){
-        cin >> c >> l;
-        tables[0][k] = c;
-        tables[1][k] = l;
-        tables[2][k] = c*l;
-    }
-
-    // Baseado no problema "Maximum Size Rectangle of All 1's"
     int aux_table[m];
     memset(aux_table, 0, sizeof(aux_table));
 
@@ -108,23 +92,28 @@ int main(){
         histogram(aux_table, m, house_measures);
     }
 
-    // Associar area com maior mesa possivel
-    int area = 0, table_selected = 0;
-    for(int i=1; i<=house_measures_size; i++){ // vetor com as medidas dos quartos
-        if(house_measures[i] != -1){
-            area = house_measures[i] * i;
-            for (int i = 0; i<k; i++){
-                if(tables[2][i] <= area && tables[1][i] <= house_measures[i] && tables[0][i] <= i){
-                    if(){
-                       // a mesa selecionada
-                       table_selected = i;
-                    }
-                }
+    int tables[2][house_measures_size+1];
+    for (int i = 0; i <= house_measures_size; i++){
+            tables[0][i] = i;
+            tables[1][i] = house_measures[i];
+    }
+
+    // Quantidade de mesas
+    // c -> comprimento da mesa
+    // l -> largura da mesa
+    int table_c = 0, table_l = 0;
+    scanf("%d", &k);
+    for (int i = 0; i < k; i++){
+        scanf("%d %d", &c, &l);
+        if((tables[0][c] == c && l <= tables[1][c]) || (tables[0][l] == l && c <= tables[1][l])){
+            if((c*l > table_c*table_l) || (c*l == table_c*table_l && l > table_l)){
+                table_c = c;
+                table_l = l;
             }
         }
     }
 
     // Dimensoes da mesa de maior area que cabe na casa
-    // cout << table/l << " " << l << "\n";;
+    printf("%d %d\n", table_c, table_l);
     return 0;
 }
