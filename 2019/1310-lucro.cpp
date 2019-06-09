@@ -4,6 +4,7 @@
 
 using namespace std;
 
+// Funcao que conta o maior subvetor de soma maxima (por inducao)
 tuple<int, int> maxSubarray(int array[], int days, int cost){
 
     tuple <int, int> profit;

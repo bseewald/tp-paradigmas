@@ -50,7 +50,6 @@ int main(){
 
     // Soma quantidade total
     for(int j=0; j<m_size; j++){
-        // printf("[%d][%d] : %lld \n", k, j, matrix[k][j]);
         totalDiffTraining = add(totalDiffTraining, matrix[k][j]);
     }
 

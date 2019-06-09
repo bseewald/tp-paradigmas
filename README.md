@@ -33,3 +33,12 @@ Resolvido usando C/C++ e o subvetor de soma máxima.
 
 ### Six Flags
 Resolvido usando C/C++ e o paradigma da mochila com repetição.
+
+### Ginástica
+Resolvido usando C/C++ e um contador de movimentos.
+
+## Go--
+Resolvido usando C/C++ e programação dinâmica.
+
+## Planta da Casa
+Resolvido usando C/C++ e o problema do maior retângulo em um histograma com tudo 1.

@@ -23,13 +23,7 @@ int main(){
         }
     }
 
-    // print board
-    // for (int i = 0; i < n; i++){
-    //     for (int j = 0; j < n; j++){
-    //         cout << "[" << i << "][" << j << "]: " << board[i][j] << endl;
-    //     }
-    // }
-
+    // Valores do tabuleiro
     // 0: regiao sem peca
     // 1: regiao com peca preta
     // 2: regiao com peca branca

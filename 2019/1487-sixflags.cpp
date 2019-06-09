@@ -4,6 +4,8 @@
 
 using namespace std;
 
+// Problema da Mochila com Repeticao
+//
 // Parametros
 // W : peso maximo da mochila
 // wt : peso dos itens
